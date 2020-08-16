@@ -29,9 +29,4 @@ module Hangman
   class Game
     include Serializable
   end
-
-  # This class represents the word to be guessed, along with what letters have been revealed
-  class Word
-    include Serializable
-  end
 end
