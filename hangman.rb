@@ -62,16 +62,23 @@ module Hangman
         print_game_status
         guess = ask_for_guess
         verify_guess(guess)
+        break if word_revealed?
       end
+
+      print_game_status
+      puts 'Game over!'
+      puts word_revealed? ? 'You win!' : 'You lose!'
+      puts "The word was: #{secret_word.join}"
     end
 
     def ask_for_guess
       guess = ''
       loop do
+        print 'Guess a letter: '
         guess = gets.chomp.upcase
         break if guess.length == 1 && guess.match?(/[A-Z]/) && guessed_letters.none?(guess)
 
-        print 'Invalid input. Please enter a valid guess: '
+        puts 'Invalid input. Please enter a valid guess.'
       end
       guess
     end
@@ -81,7 +88,6 @@ module Hangman
       puts revealed_letters.join(' ')
       puts "Lives Left: #{lives_left}"
       puts "Guessed Letters: #{guessed_letters.join(', ')}"
-      print 'Guess a letter: '
     end
 
     def verify_guess(guess)
@@ -92,6 +98,10 @@ module Hangman
         puts "\nIncorrect!"
         self.lives_left -= 1
       end
+    end
+
+    def word_revealed?
+      secret_word == revealed_letters
     end
   end
 end
