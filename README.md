@@ -9,3 +9,5 @@ Mixins, JSON, serialization
 
 ## What I learned
 How to write a game state to a file and load it from file to save and resume a game
+
+[![Run on Repl.it](https://repl.it/badge/github/nguyenjessev/hangman)](https://repl.it/github/nguyenjessev/hangman)
