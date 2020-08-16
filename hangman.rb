@@ -39,18 +39,39 @@ module Hangman
       @possible_words = File.readlines('5desk.txt', chomp: true).select { |word| word.length.between?(5, 12) }
     end
 
+    def start_game
+      puts "\nWelcome to Hangman! The computer will randomly select a word and it is your job to try to guess it."
+      puts 'You have 6 lives. Try to guess every letter!'
+
+      main_menu
+    end
+
+    private
+
+    def main_menu
+      puts "\nSelect a menu option:"
+      puts '1: New Game'
+      puts '2: Load Game'
+
+      selection = 0
+      loop do
+        print ': '
+        selection = gets.chomp.to_i
+        break if [1, 2].include?(selection)
+
+        puts 'Invalid input. Please try again.'
+      end
+
+      new_game if selection == 1
+      load_game if selection == 2
+    end
+
     def new_game
       generate_secret_word
       self.guessed_letters = []
       self.lives_left = 6
-
-      puts "\nWelcome to Hangman! The computer will randomly select a word and it is your job to try to guess it."
-      puts 'You have 6 lives. Try to guess every letter!'
-
       play_game
     end
-
-    private
 
     def generate_secret_word
       self.secret_word = possible_words.sample.upcase.split('')
@@ -124,9 +145,11 @@ module Hangman
           play_game
         rescue StandardError
           puts "\nAn error occurred."
+          main_menu
         end
       else
         puts "\nNo save file found."
+        main_menu
       end
     end
 
@@ -143,4 +166,4 @@ module Hangman
 end
 
 game = Hangman::Game.new
-game.new_game
+game.start_game
