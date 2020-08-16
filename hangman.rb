@@ -155,10 +155,10 @@ module Hangman
 
     def serialize
       obj = {}
-      obj[:secret_word] = secret_word
-      obj[:revealed_letters] = revealed_letters
-      obj[:guessed_letters] = guessed_letters
-      obj[:lives_left] = lives_left
+      obj[:@secret_word] = secret_word
+      obj[:@revealed_letters] = revealed_letters
+      obj[:@guessed_letters] = guessed_letters
+      obj[:@lives_left] = lives_left
 
       @@serializer.dump(obj)
     end
