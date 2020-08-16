@@ -4,7 +4,7 @@ require 'json'
 
 # Mixin to make child classes serializable
 module Serializable
-  @serializer = JSON
+  @@serializer = JSON
 
   def serialize
     obj = {}
@@ -13,11 +13,11 @@ module Serializable
       obj[var] = instance_variable_get(var)
     end
 
-    @serializer.dump obj
+    @@serializer.dump(obj)
   end
 
   def unserialize(string)
-    obj = @serializer.parse(string)
+    obj = @@serializer.parse(string)
     obj.keys.each do |key|
       instance_variable_set(key, obj[key])
     end
@@ -74,11 +74,15 @@ module Hangman
     def ask_for_guess
       guess = ''
       loop do
-        print 'Guess a letter: '
+        print 'Guess a letter (enter "save" to save the game): '
         guess = gets.chomp.upcase
         break if guess.length == 1 && guess.match?(/[A-Z]/) && guessed_letters.none?(guess)
 
-        puts 'Invalid input. Please enter a valid guess.'
+        if guess == 'SAVE'
+          save_game
+        else
+          puts 'Invalid input. Please try again.'
+        end
       end
       guess
     end
@@ -102,6 +106,20 @@ module Hangman
 
     def word_revealed?
       secret_word == revealed_letters
+    end
+
+    def save_game
+      exit
+    end
+
+    def serialize
+      obj = {}
+      obj[:secret_word] = secret_word
+      obj[:revealed_letters] = revealed_letters
+      obj[:guessed_letters] = guessed_letters
+      obj[:lives_left] = lives_left
+
+      @@serializer.dump(obj)
     end
   end
 end
