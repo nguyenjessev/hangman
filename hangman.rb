@@ -44,6 +44,9 @@ module Hangman
       self.guessed_letters = []
       self.lives_left = 6
 
+      puts "\nWelcome to Hangman! The computer will randomly select a word and it is your job to try to guess it."
+      puts 'You have 6 lives. Try to guess every letter!'
+
       play_game
     end
 
@@ -55,9 +58,6 @@ module Hangman
     end
 
     def play_game
-      puts "\nWelcome to Hangman! The computer will randomly select a word and it is your job to try to guess it."
-      puts 'You have 6 lives. Try to guess every letter!'
-
       until lives_left.zero?
         print_game_status
         guess = ask_for_guess
@@ -113,6 +113,21 @@ module Hangman
 
       puts "\nGame saved! The program will now exit."
       exit
+    end
+
+    def load_game
+      if File.exist?('save_file.txt')
+        begin
+          save_data = File.read('save_file.txt')
+          unserialize(save_data)
+          puts "\nGame successfully loaded from file."
+          play_game
+        rescue StandardError
+          puts "\nAn error occurred."
+        end
+      else
+        puts "\nNo save file found."
+      end
     end
 
     def serialize
