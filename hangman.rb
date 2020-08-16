@@ -32,7 +32,7 @@ module Hangman
     attr_accessor :secret_word, :revealed_letters, :guessed_letters, :lives_left, :possible_words
 
     def initialize
-      @secret_word = ''
+      @secret_word = []
       @revealed_letters = []
       @guessed_letters = []
       @lives_left = 0
@@ -50,7 +50,7 @@ module Hangman
     private
 
     def generate_secret_word
-      self.secret_word = possible_words.sample.upcase
+      self.secret_word = possible_words.sample.upcase.split('')
       self.revealed_letters = Array.new(secret_word.length) { '_' }
     end
 
@@ -82,6 +82,16 @@ module Hangman
       puts "Lives Left: #{lives_left}"
       puts "Guessed Letters: #{guessed_letters.join(', ')}"
       print 'Guess a letter: '
+    end
+
+    def verify_guess(guess)
+      guessed_letters << guess
+      if secret_word.include?(guess)
+        secret_word.each_index { |i| revealed_letters[i] = guess if guess == secret_word[i] }
+      else
+        puts "\nIncorrect!"
+        self.lives_left -= 1
+      end
     end
   end
 end
