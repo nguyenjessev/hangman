@@ -109,7 +109,7 @@ module Hangman
     end
 
     def save_game
-      File.open('save_file', 'w') { |save_file| save_file.puts serialize }
+      File.open('save_file.txt', 'w') { |save_file| save_file.puts serialize }
 
       puts "\nGame saved! The program will now exit."
       exit
